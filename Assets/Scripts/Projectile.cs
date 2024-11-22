@@ -4,11 +4,23 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [Header("Attributes")]
-    [SerializeField] private float bulletSpeed = 10.0f;
+    [SerializeField] private int damage = 1;
+    [SerializeField] private float bulletLife = 3;
 
 
-    void Update()
+    void Awake()
     {
-        transform.Translate(Vector3.up * bulletSpeed * Time.deltaTime);
+        Destroy(gameObject, bulletLife);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        var health = other.transform.GetComponent<Health>();
+        if (health != null)
+        {
+            health.TakeDamage(damage);
+        }
+
+        Destroy(gameObject);
     }
 }

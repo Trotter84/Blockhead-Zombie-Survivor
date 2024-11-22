@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.2544478, y: 0.6333673, z: -0.5536088}
-  m_LocalScale: {x: 0.04, y: 0.040000018, z: 0.040000014}
+  m_LocalScale: {x: 0.040000003, y: 0.040000025, z: 0.040000014}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8286769a26c45fba4cb57ec6105796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 5
+  damage: 1
+  bulletLife: 3
 --- !u!33 &7268913168897450533
 MeshFilter:
   m_ObjectHideFlags: 0

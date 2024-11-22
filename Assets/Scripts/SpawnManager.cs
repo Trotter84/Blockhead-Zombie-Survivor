@@ -57,13 +57,9 @@ public class SpawnManager : MonoBehaviour
         return null;
     }
 
-    IEnumerator ZombieDeathRoutine(int hitZombie)
+    public void Death()
     {
-        GameObject zombie = GetPooledObject(1);
-        if (zombie != null)
-        {
-            zombie.SetActive(false);
-        }
+        gameObject.SetActive(false);
     }
 
     IEnumerator SpawnZombieRoutine()

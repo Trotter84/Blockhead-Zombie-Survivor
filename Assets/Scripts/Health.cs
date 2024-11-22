@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        gameObject.SetActive(false);
+        SpawnManager.spawnManager.Death();
     }
 
     void Update()

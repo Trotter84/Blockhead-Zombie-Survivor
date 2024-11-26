@@ -7,16 +7,23 @@ public class SpawnManager : MonoBehaviour
 {
     [Header("Components")]
     public static SpawnManager spawnManager;
-    private GameManager gameManager;
+    [SerializeField] private Transform bulletSpawnPoint;
 
-    [Header("Object Pool")]
-    [SerializeField] private GameObject zombiePrefab;
-    [SerializeField] private List<GameObject> pooledZombieObjects = new List<GameObject>();
-    [SerializeField] private int amountToPool = 10;
-    private Transform zombieContainer;
 
     [Header("Spawn Control")]
     [SerializeField] private bool isSpawning = false;
+
+    [Header("Bullet Pool")]
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private int bulletCountToPool = 30;
+    [SerializeField] private List<GameObject> pooledBullets = new List<GameObject>();
+    [SerializeField] private GameObject bulletContainer;
+
+    [Header("Zombie Pool")]
+    [SerializeField] private GameObject zombiePrefab;
+    [SerializeField] private int zombieCountToPool = 10;
+    [SerializeField] private List<GameObject> pooledZombies = new List<GameObject>();
+    [SerializeField] private GameObject zombieContainer;
 
     [Header("Zombie Spawn Details")]
     [SerializeField] private float zombieSpawnDelay = 4f;
@@ -28,48 +35,73 @@ public class SpawnManager : MonoBehaviour
         {
             spawnManager = this;
         }
+
+        bulletSpawnPoint = GameObject.Find("BulletSpawnPoint").GetComponent<Transform>();
+        if (bulletSpawnPoint == null)
+        {
+            Debug.LogError("The BulletSpawnPoint GameObject on the Spawn Manager is NULL.");
+        }
     }
 
     void Start()
     {
-        for (int i = 0; i < amountToPool; i++)
-        {
-            GameObject zombies = Instantiate(zombiePrefab);
-            zombies.SetActive(false);
-            pooledZombieObjects.Add(zombies);
-        }
+        InitiatePools();
 
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        isSpawning = gameManager.isGameActive;
+        isSpawning = GameManager.gameManager.isGameActive;
 
         StartCoroutine(SpawnZombieRoutine());
     }
 
-    public GameObject GetPooledObject()
+    private void InitiatePools()
     {
-        for (int i = 0; i < pooledZombieObjects.Count; i++)
+        for (int i = 0; i < bulletCountToPool; i++)
         {
-            if (!pooledZombieObjects[i].activeInHierarchy)
+            GameObject bullets = Instantiate(bulletPrefab);
+            bullets.transform.parent = bulletContainer.transform;
+            bullets.SetActive(false);
+            pooledBullets.Add(bullets);
+        }
+
+        for (int i = 0; i < zombieCountToPool; i++)
+        {
+            GameObject zombies = Instantiate(zombiePrefab);
+            zombies.transform.parent = zombieContainer.transform;
+            zombies.SetActive(false);
+            pooledZombies.Add(zombies);
+        }
+    }
+
+    public GameObject GetPooledBullets()
+    {
+        for (int i = 0; i < pooledBullets.Count; i++)
+        {
+            if (!pooledBullets[i].activeInHierarchy)
             {
-                return pooledZombieObjects[i];
+                return pooledBullets[i];
             }
         }
         return null;
     }
 
-    public void Death()
+    public GameObject GetPooledZombies()
     {
-        gameObject.SetActive(false);
+        for (int i = 0; i < pooledZombies.Count; i++)
+        {
+            if (!pooledZombies[i].activeInHierarchy)
+            {
+                return pooledZombies[i];
+            }
+        }
+        return null;
     }
 
     IEnumerator SpawnZombieRoutine()
     {
         while (isSpawning)
         {
-            GameObject zombie = GetPooledObject();
+            GameObject zombie = GetPooledZombies();
             if (zombie != null)
             {
-                zombie.transform.SetParent(zombieContainer, true);
                 zombie.transform.position = new Vector3(Random.Range(2f, 5f), 0.5f, Random.Range(-3f, 3f));
                 zombie.SetActive(true);
             }

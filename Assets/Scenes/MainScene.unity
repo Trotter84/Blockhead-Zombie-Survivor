@@ -741,7 +741,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpawnPoint: {fileID: 0}
   bulletPrefab: {fileID: 3928895266442436931, guid: 1e72270cb9a274063af7b019cb00ba2e, type: 3}
-  bulletSpeed: 10
+  bulletSpeed: 30
+  bulletDamage: 1
 --- !u!95 &743899703
 Animator:
   serializedVersion: 7
@@ -764,6 +765,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &782360066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782360067}
+  m_Layer: 0
+  m_Name: Bullet Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &782360067
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782360066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,10 +1033,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09fcc3bb5f5804607a13924baa0b69c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombiePrefab: {fileID: 1534378123475285282, guid: 582838ff5e15a4d928b07be7ed7c5cbd, type: 3}
-  pooledZombieObjects: []
-  amountToPool: 10
+  bulletSpawnPoint: {fileID: 0}
   isSpawning: 0
+  bulletPrefab: {fileID: 3928895266442436931, guid: 1e72270cb9a274063af7b019cb00ba2e, type: 3}
+  bulletCountToPool: 30
+  pooledBullets: []
+  bulletContainer: {fileID: 782360066}
+  zombiePrefab: {fileID: 1534378123475285282, guid: 582838ff5e15a4d928b07be7ed7c5cbd, type: 3}
+  zombieCountToPool: 10
+  pooledZombies: []
+  zombieContainer: {fileID: 2053266596}
   zombieSpawnDelay: 4
 --- !u!1 &1754896773
 GameObject:
@@ -1138,13 +1176,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767750634}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 743899698}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1871380758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1228,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGameActive: 0
+--- !u!1 &2053266596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2053266597}
+  m_Layer: 0
+  m_Name: Zombie Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2053266597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053266596}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2071672722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,12 +1438,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 0}
   wayPoint: {fileID: 0}
+  cameraPosition: {fileID: 0}
+  cameraSwap: 1
   weapon: {fileID: 0}
   weaponScript: {fileID: 0}
-  playerController: {fileID: 0}
-  zombie: {fileID: 0}
   moveSpeed: 3
-  turnSpeed: 250
+  turnSpeed: 200
 --- !u!114 &2071672731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1388,6 +1457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingHealth: 5
+  currentHealth: 0
 --- !u!1 &2115922424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,7 +1575,9 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1871380759}
-  - {fileID: 1560992942}
-  - {fileID: 497847968}
   - {fileID: 1296631983}
+  - {fileID: 1560992942}
+  - {fileID: 782360067}
+  - {fileID: 2053266597}
+  - {fileID: 497847968}
   - {fileID: 2071672726}

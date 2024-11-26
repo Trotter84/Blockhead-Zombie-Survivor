@@ -4,25 +4,21 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [Header("Components")]
+    public static GameManager gameManager;
     private SpawnManager spawnManager;
 
     [Header("Game Control")]
     public bool isGameActive = false;
 
 
-    void Awake()
+    private void Awake()
     {
+        if (gameManager == null)
+        {
+            gameManager = this;
+        }
+
         isGameActive = true;
     }
 
-    void Start()
-    {
-        spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
-
-    }
-
-    void Update()
-    {
-
-    }
 }

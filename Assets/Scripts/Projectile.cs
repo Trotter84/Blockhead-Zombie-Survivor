@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [Header("Attributes")]
-    [SerializeField] private int damage = 1;
-    [SerializeField] private float bulletLife = 3;
+    [Header("Components")]
+    [SerializeField] private GameObject bulletContainer;
 
 
-    void Awake()
+//TODO: Get Bullet to end correctly.
+
+    void Start()
     {
-        Destroy(gameObject, bulletLife);
+        bulletContainer = GameObject.Find("Bullet Container");
     }
 
-    void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision other)
     {
-        var health = other.transform.GetComponent<Health>();
-        if (health != null)
+        if (other != null)
         {
-            health.TakeDamage(damage);
+            Debug.Log("Hi");
+            gameObject.SetActive(false);
+            gameObject.transform.parent = bulletContainer.transform;
         }
-
-        Destroy(gameObject);
     }
 }

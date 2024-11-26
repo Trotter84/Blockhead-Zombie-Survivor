@@ -42,7 +42,7 @@ public class Zombie : MonoBehaviour
             var health = other.GetComponent<Health>();
             if (health != null)
             {
-                health.TakeDamage(damage);
+                health.TakeDamage(damage, other.transform);
             }
         }
     }

@@ -5,7 +5,7 @@ public class Health : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField] private int startingHealth = 5;
-    private int currentHealth;
+    [SerializeField] private int currentHealth;
 
 
     private void OnEnable()
@@ -13,7 +13,7 @@ public class Health : MonoBehaviour
         currentHealth = startingHealth;
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damageAmount, Transform objectHit)
     {
         currentHealth -= damageAmount;
 
@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        SpawnManager.spawnManager.Death();
+        gameObject.SetActive(false);
     }
 
     void Update()

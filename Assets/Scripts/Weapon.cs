@@ -8,7 +8,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     
     [Header("Bullet Attributes")]
-    [SerializeField] private float bulletSpeed = 10f;
+    [SerializeField] private float bulletSpeed = 30f;
+    [SerializeField] [Range(1, 10)] private int bulletDamage = 1;
+
+    private RaycastHit hitInfo;
 
 
     void Start()
@@ -27,7 +30,29 @@ public class Weapon : MonoBehaviour
 
     public void Fire()
     {
-        var bullet = Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.forward * bulletSpeed;
+        Ray ray = new Ray(bulletSpawnPoint.position, bulletSpawnPoint.up);
+
+        Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.up * 25, Color.blue, 3f);
+        
+        GameObject bullet = SpawnManager.spawnManager.GetPooledBullets();
+        if (bullet != null)
+        {
+            bullet.transform.position = bulletSpawnPoint.position;
+            bullet.transform.rotation = bulletSpawnPoint.rotation;
+            bullet.transform.parent = bulletSpawnPoint.transform;
+            bullet.SetActive(true);
+            bullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.up * bulletSpeed;
+        }
+
+        if (Physics.Raycast(ray, out hitInfo, 25))
+        {
+            var health = hitInfo.transform.GetComponent<Health>();
+            if (health != null)
+            {
+                Debug.Log($"Ray has hit {hitInfo.transform}");
+                health.TakeDamage(bulletDamage, hitInfo.transform);
+            }
+        }
     }
+
 }

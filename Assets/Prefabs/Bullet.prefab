@@ -48,8 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8286769a26c45fba4cb57ec6105796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  bulletLife: 3
+  bulletContainer: {fileID: 0}
 --- !u!33 &7268913168897450533
 MeshFilter:
   m_ObjectHideFlags: 0

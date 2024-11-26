@@ -1,17 +1,17 @@
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     // [SerializeField] private CharacterController _characterController;
-    [SerializeField] private GameObject wayPoint;
     [SerializeField] private Camera cameraPosition;
     private int cameraSwap = 1;
+    [SerializeField] private GameObject wayPoint;
     [SerializeField] private GameObject weapon;
     [SerializeField] private Weapon weaponScript;
+    [SerializeField] private Image crosshair;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
@@ -42,6 +42,13 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("The WeaponScript on Player is NULL.");
         }
+
+        crosshair = GameObject.Find("Crosshair").GetComponent<Image>();
+        if (crosshair == null)
+        {
+            Debug.LogError("The Crosshair GameObject on the Player is NULL.");
+        }
+        crosshair.material.color = Color.clear;
     }
 
     void Update()
@@ -94,12 +101,16 @@ public class PlayerController : MonoBehaviour
                     cameraPosition.transform.SetParent(null, true);
                     cameraPosition.transform.position = new Vector3(0, 5f, -4.4000001f);
                     cameraPosition.transform.rotation = Quaternion.Euler(45, 0, 0);
+                    weaponScript.isFpsActive = false;
+                    crosshair.material.color = Color.clear;
                     cameraSwap++;
                     break;
                 case 1:
                     cameraPosition.transform.SetParent(transform, true);
                     cameraPosition.transform.position = transform.position + new Vector3(0.09f, 0.3f, 0);
                     cameraPosition.transform.rotation = transform.rotation;
+                    weaponScript.isFpsActive = true;
+                    crosshair.material.color = Color.white;
                     cameraSwap--;
                     break;
             }

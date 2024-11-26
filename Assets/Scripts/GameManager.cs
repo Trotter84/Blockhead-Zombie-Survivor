@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Control")]
     public bool isGameActive = false;
+    [SerializeField] [Range(0.01f, 1f)] private float time = 1f;
 
 
     private void Awake()
@@ -19,6 +20,11 @@ public class GameManager : MonoBehaviour
         }
 
         isGameActive = true;
+    }
+
+    void Update()
+    {
+        Time.timeScale = time;
     }
 
 }

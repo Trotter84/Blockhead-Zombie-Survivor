@@ -1,6 +1,9 @@
 using UnityEngine;
 
 
+//TODO: Get Zombies to face player.
+
+
 public class Zombie : MonoBehaviour
 {
     [Header("Components")]

@@ -1,6 +1,9 @@
 using UnityEngine;
 
 
+//TODO: Add different weapons.
+
+
 public class Weapon : MonoBehaviour
 {
     [Header("Components")]

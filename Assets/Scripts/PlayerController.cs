@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+//TODO: Change Player controls.
+
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]

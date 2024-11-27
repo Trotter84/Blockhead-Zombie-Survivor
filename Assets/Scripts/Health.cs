@@ -5,7 +5,7 @@ public class Health : MonoBehaviour
 {
     [Header("Attributes")]
     [SerializeField] private int startingHealth = 5;
-    [SerializeField] private int currentHealth;
+    public int currentHealth;
 
 
     private void OnEnable()

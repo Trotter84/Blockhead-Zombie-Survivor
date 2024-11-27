@@ -78,9 +78,9 @@ public class Weapon : MonoBehaviour
             currentBullet.transform.rotation = bulletSpawnPoint.rotation;
             currentBullet.transform.up = direction.normalized;
             currentBullet.SetActive(true);
-            currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+            // currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
             
-            // currentBullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.up * shootForce;
+            currentBullet.GetComponent<Rigidbody>().linearVelocity = direction.normalized * shootForce;
         }
 
     }

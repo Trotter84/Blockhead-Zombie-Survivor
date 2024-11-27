@@ -1,20 +1,17 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class Zombie : MonoBehaviour
 {
     [Header("Components")]
-    private GameObject wayPoint;
+    [SerializeField] private GameObject wayPoint;
     private Vector3 wayPointPosition;
 
     [Header("Attributes")]
     [SerializeField] [Range(0.1f, 5f)] private float zombieSpeed = 0.5f;
     [SerializeField] [Range(1f, 10f)] private float detectionDistance = 10.0f;
-    [SerializeField] [Range(1, 10)] private int damage = 1;
+    [SerializeField] [Range(1, 10)] private int zombieDamage = 1;
 
-
-    
 
     void Start()
     {
@@ -34,16 +31,17 @@ public class Zombie : MonoBehaviour
         }
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+    public void OnCollisionEnter(Collision other)
+    { 
+        if (other.transform.CompareTag("Player"))
         {
-            Debug.Log("Collide.");
-            var health = other.GetComponent<Health>();
+            var health = other.transform.GetComponent<Health>();
             if (health != null)
             {
-                health.TakeDamage(damage, other.transform);
+                Debug.Log("Collide.");
+                health.TakeDamage(zombieDamage, other.transform);
             }
         }
     }
+
 }

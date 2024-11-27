@@ -928,7 +928,7 @@ MonoBehaviour:
   magazineSize: 0
   bulletsPerTap: 0
   allowButtonHold: 0
-  shootForce: 1
+  shootForce: 10
   bulletDamage: 1
 --- !u!95 &743899703
 Animator:
@@ -1223,13 +1223,13 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 0}
   isSpawning: 0
   bulletPrefab: {fileID: 3928895266442436931, guid: 1e72270cb9a274063af7b019cb00ba2e, type: 3}
-  bulletCountToPool: 30
-  pooledBullets: []
+  bulletCountToPool: 20
   bulletContainer: {fileID: 782360066}
+  pooledBullets: []
   zombiePrefab: {fileID: 1534378123475285282, guid: 582838ff5e15a4d928b07be7ed7c5cbd, type: 3}
   zombieCountToPool: 10
-  pooledZombies: []
   zombieContainer: {fileID: 2053266596}
+  pooledZombies: []
   zombieSpawnDelay: 4
 --- !u!1 &1754896773
 GameObject:
@@ -1364,7 +1364,7 @@ Transform:
   m_GameObject: {fileID: 1767750634}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0.6}
+  m_LocalPosition: {x: -0, y: 0, z: 0.626}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

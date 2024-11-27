@@ -16,10 +16,10 @@ public class Weapon : MonoBehaviour
     int bulletsLeft, bulletsShot;
 
     [Header("Bullet Attributes")]
-    [SerializeField] private float shootForce = 10f;
-    [SerializeField] [Range(1, 10)] private int bulletDamage = 1;
+    [SerializeField] private float shootForce = 30f;
+    [Range(1, 10)] public int bulletDamage = 1;
 
-    private RaycastHit hitInfo;
+    public RaycastHit hitInfo;
     private Vector3 targetPoint;
 
 
@@ -37,6 +37,7 @@ public class Weapon : MonoBehaviour
         }
 
         fpsCam = Camera.main.GetComponent<Camera>();
+        if (fpsCam == null)
         {
             Debug.LogError("The Camera on Weapon is NULL.");
         }
@@ -44,18 +45,16 @@ public class Weapon : MonoBehaviour
 
     public void Fire()
     {
-
-        if (isFpsActive)
-        {
-            Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            ShootBullet(ray);
-        }
-        else
+        if (!isFpsActive)
         {
             Ray ray = new Ray(bulletSpawnPoint.position, bulletSpawnPoint.up);
             ShootBullet(ray);
         }
-
+        else
+        {
+            Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            ShootBullet(ray);
+        }
     }
 
     private void ShootBullet(Ray ray)
@@ -63,13 +62,6 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo))
         {
             targetPoint = hitInfo.point;
-
-            // var health = hitInfo.transform.GetComponent<Health>();
-            // if (health != null)
-            // {
-            //     Debug.Log($"Ray has hit {hitInfo.transform}");
-            //     health.TakeDamage(bulletDamage, hitInfo.transform);
-            // }
         }
         else
         {
@@ -87,86 +79,9 @@ public class Weapon : MonoBehaviour
             currentBullet.transform.up = direction.normalized;
             currentBullet.SetActive(true);
             currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
+            
             // currentBullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.up * shootForce;
         }
 
     }
-        
-        
-            // Debug.LogError("Fire is not working.");
-        
-            // Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.up * 25, Color.blue, 3f);
-            
-        
-
-
-
-
-        // if (isFpsActive)
-        // {
-        //     Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-
-        //     if (Physics.Raycast(ray, out hitInfo))
-        //     {
-        //         targetPoint = hitInfo.point;
-
-        //         // var health = hitInfo.transform.GetComponent<Health>();
-        //         // if (health != null)
-        //         // {
-        //         //     Debug.Log($"Ray has hit {hitInfo.transform}");
-        //         //     health.TakeDamage(bulletDamage, hitInfo.transform);
-        //         // }
-        //     }
-        //     else
-        //     {
-        //         targetPoint = ray.GetPoint(25);
-        //     }
-
-        //     Vector3 direction = targetPoint - bulletSpawnPoint.position;
-            
-        //     GameObject currentBullet = SpawnManager.spawnManager.GetPooledBullets();
-
-        //     if (currentBullet != null)
-        //     {
-        //         currentBullet.transform.position = bulletSpawnPoint.position;
-        //         currentBullet.transform.rotation = bulletSpawnPoint.rotation;
-        //         currentBullet.transform.up = direction.normalized;
-        //         currentBullet.SetActive(true);
-        //         currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
-        //         // currentBullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.up * shootForce;
-        //     }
-        // }
-        // else
-        // {
-        //     // Debug.LogError("Fire is not working.");
-        //     Ray ray = new Ray(bulletSpawnPoint.position, bulletSpawnPoint.up);
-
-        //     Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.up * 25, Color.blue, 3f);
-            
-        //     if (Physics.Raycast(ray, out hitInfo, 25))
-        //     {
-
-        //         var health = hitInfo.transform.GetComponent<Health>();
-        //         if (health != null)
-        //         {
-        //             Debug.Log($"Ray has hit {hitInfo.transform}");
-        //             health.TakeDamage(bulletDamage, hitInfo.transform);
-        //         }
-        //     }
-
-        //     GameObject currentBullet = SpawnManager.spawnManager.GetPooledBullets();
-
-        //     if (currentBullet != null)
-        //     {
-        //         currentBullet.transform.position = bulletSpawnPoint.position;
-        //         currentBullet.transform.rotation = bulletSpawnPoint.rotation;
-        //         currentBullet.transform.up = direction.normalized;
-        //         currentBullet.SetActive(true);
-        //         currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
-        //         // currentBullet.GetComponent<Rigidbody>().linearVelocity = bulletSpawnPoint.up * shootForce;
-        //     }
-        //     Debug.DrawRay(bulletSpawnPoint.position, bulletSpawnPoint.up * 25, Color.blue, 3f);
-            
-        // }
-
 }

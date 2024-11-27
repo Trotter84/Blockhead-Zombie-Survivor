@@ -15,15 +15,15 @@ public class SpawnManager : MonoBehaviour
 
     [Header("Bullet Pool")]
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private int bulletCountToPool = 30;
-    [SerializeField] private List<GameObject> pooledBullets = new List<GameObject>();
+    [SerializeField] private int bulletCountToPool = 20;
     [SerializeField] private GameObject bulletContainer;
+    [SerializeField] private List<GameObject> pooledBullets = new List<GameObject>();
 
     [Header("Zombie Pool")]
     [SerializeField] private GameObject zombiePrefab;
     [SerializeField] private int zombieCountToPool = 10;
-    [SerializeField] private List<GameObject> pooledZombies = new List<GameObject>();
     [SerializeField] private GameObject zombieContainer;
+    [SerializeField] private List<GameObject> pooledZombies = new List<GameObject>();
 
     [Header("Zombie Spawn Details")]
     [SerializeField] private float zombieSpawnDelay = 4f;
@@ -35,19 +35,29 @@ public class SpawnManager : MonoBehaviour
         {
             spawnManager = this;
         }
+    }
 
+    void Start()
+    {
         bulletSpawnPoint = GameObject.Find("BulletSpawnPoint").GetComponent<Transform>();
         if (bulletSpawnPoint == null)
         {
             Debug.LogError("The BulletSpawnPoint GameObject on the Spawn Manager is NULL.");
         }
-    }
 
-    void Start()
-    {
-        InitiatePools();
+        if (bulletContainer == null)
+        {
+            Debug.LogError("The Bullet Container GameObject on Spawn Manager is NULL.");
+        }
+        
+        if (zombieContainer == null)
+        {
+            Debug.LogError("The Zombie Container GameObject on Spawn Manager is NULL.");
+        }
 
         isSpawning = GameManager.gameManager.isGameActive;
+        
+        InitiatePools();
 
         StartCoroutine(SpawnZombieRoutine());
     }

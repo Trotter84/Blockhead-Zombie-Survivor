@@ -4,23 +4,48 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private GameObject bulletContainer;
+    [SerializeField] private Weapon weapon;
 
 
 //TODO: Get Bullet to end correctly.
 
+
     void Start()
     {
-        bulletContainer = GameObject.Find("Bullet Container");
+        weapon = GameObject.Find("Weapon").GetComponent<Weapon>();
+        if (weapon == null)
+        {
+            Debug.LogError("The Weapon GameObject on Projectile is NULL.");
+        }
     }
 
     public void OnCollisionEnter(Collision other)
     {
         if (other != null)
         {
-            Debug.Log("Hi");
-            gameObject.SetActive(false);
-            gameObject.transform.parent = bulletContainer.transform;
+            var health = other.transform.GetComponent<Health>();
+            if (health != null)
+            {
+                Debug.Log($"Ray has hit {other.transform}");
+                health.TakeDamage(weapon.bulletDamage, other.transform);
+                gameObject.SetActive(false);
+            }
         }
+        else
+        {
+            gameObject.SetActive(false);
+        }
+        
+
+
+
+        // Debug.Log("Hello");
+        // var colliderHit = other.transform.GetComponent<Collider>();
+        // if (colliderHit != null)
+        // {
+        //     Debug.Log("Hi");
+        //     gameObject.SetActive(false);
+        // }
+        
     }
 }

@@ -22,7 +22,7 @@ public class UpdateHealthLevel : MonoBehaviour
         playerHealthScript = GameObject.Find("Player").GetComponent<Health>();
         if (playerHealthScript == null)
         {
-            Debug.LogError("The Health script on the Player GameObject is NULL.");
+            Debug.LogError("The Health script on the UpdateHealthLevel is NULL.");
         }
 
         UpdateHealthDisplay();

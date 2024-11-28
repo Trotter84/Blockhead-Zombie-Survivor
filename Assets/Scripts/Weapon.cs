@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
+//TODO: Setup can shoot
 //TODO: Add different weapons.
 
 
@@ -13,10 +15,11 @@ public class Weapon : MonoBehaviour
     public bool isFpsActive = false;
     
     [Header("Weapon Stats")]
+    public int weaponSelected;
     public float reloadTime;
     public int magazineSize, bulletsPerTap;
-    public bool allowButtonHold;
-    int bulletsLeft, bulletsShot;
+    public bool allowButtonHold, canFire;
+    public int bulletsLeft, bulletsShot;
 
     [Header("Bullet Attributes")]
     [SerializeField] private float shootForce = 30f;
@@ -44,6 +47,8 @@ public class Weapon : MonoBehaviour
         {
             Debug.LogError("The Camera on Weapon is NULL.");
         }
+
+        CheckMagazine(0);
     }
 
     public void Fire()
@@ -57,6 +62,13 @@ public class Weapon : MonoBehaviour
         {
             Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             ShootBullet(ray);
+        }
+
+        bulletsLeft--;
+
+        if (bulletsLeft >= 0)
+        {
+
         }
     }
 
@@ -85,6 +97,28 @@ public class Weapon : MonoBehaviour
             
             currentBullet.GetComponent<Rigidbody>().linearVelocity = direction.normalized * shootForce;
         }
+    }
 
+    void CheckMagazine(int weaponSelected)
+    {
+
+        switch (weaponSelected)
+        {
+            case 0:
+                allowButtonHold = false;
+                magazineSize = 9;
+                bulletsLeft = magazineSize;
+                break;
+            case 1:
+                allowButtonHold = true;
+                magazineSize = 32;
+                bulletsLeft = magazineSize;
+                break;
+            case 2:
+                allowButtonHold = false;
+                magazineSize = 4;
+                bulletsLeft = magazineSize;
+                break;
+        }
     }
 }

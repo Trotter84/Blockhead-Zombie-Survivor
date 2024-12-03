@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -13,12 +14,13 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Camera fpsCam;
     public bool isFpsActive = false;
+    [SerializeField] private UIManager uiManager;
     
     [Header("Weapon Stats")]
-    public int weaponSelected;
+    public int selectedWeapon;
     public float reloadTime;
     public int magazineSize, bulletsPerTap;
-    public bool allowButtonHold, canFire;
+    public bool allowButtonHold, canFire, isReloading = false;
     public int bulletsLeft, bulletsShot;
 
     [Header("Bullet Attributes")]
@@ -42,33 +44,49 @@ public class Weapon : MonoBehaviour
             Debug.LogError("The Bullet Prefab on Weapon is NULL.");
         }
 
+        uiManager = GameObject.Find("Reloading_txt").GetComponent<UIManager>();
+        if (uiManager == null)
+        {
+            Debug.LogError("The UIManager Script on Weapon is NULL.");
+        }
+
         fpsCam = Camera.main.GetComponent<Camera>();
         if (fpsCam == null)
         {
             Debug.LogError("The Camera on Weapon is NULL.");
         }
 
-        CheckMagazine(0);
+        SelectedWeapon(0);
+    }
+
+    void Update()
+    {
+        if (bulletsLeft > 0 && !isReloading)
+        {
+            canFire = true;
+        }
+
+        if (bulletsLeft <= 0 || isReloading)
+        {
+            canFire = false;
+        }
     }
 
     public void Fire()
     {
-        if (!isFpsActive)
+        if (canFire)
         {
-            Ray ray = new Ray(bulletSpawnPoint.position, bulletSpawnPoint.up);
-            ShootBullet(ray);
-        }
-        else
-        {
-            Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-            ShootBullet(ray);
-        }
-
-        bulletsLeft--;
-
-        if (bulletsLeft >= 0)
-        {
-
+            if (!isFpsActive)
+            {
+                Ray ray = new Ray(bulletSpawnPoint.position, bulletSpawnPoint.up);
+                ShootBullet(ray);
+            }
+            else
+            {
+                Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                ShootBullet(ray);
+            }
+            bulletsLeft--;
         }
     }
 
@@ -99,26 +117,48 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void CheckMagazine(int weaponSelected)
+    void SelectedWeapon(int selectedWeapon)
     {
-
-        switch (weaponSelected)
+        switch (selectedWeapon)
         {
             case 0:
                 allowButtonHold = false;
                 magazineSize = 9;
+                reloadTime = 1.5f;
                 bulletsLeft = magazineSize;
                 break;
             case 1:
                 allowButtonHold = true;
                 magazineSize = 32;
+                reloadTime = 2.5f;
                 bulletsLeft = magazineSize;
                 break;
             case 2:
                 allowButtonHold = false;
                 magazineSize = 4;
+                reloadTime = 4f;
                 bulletsLeft = magazineSize;
                 break;
         }
+    }
+
+    public void Reload()
+    {
+        if (bulletsLeft != magazineSize)
+        {
+            isReloading = true;
+            StartCoroutine(ReloadRoutine());
+        }
+    }
+
+
+    IEnumerator ReloadRoutine()
+    {
+        StartCoroutine(uiManager.ReloadingUIRoutine(isReloading, reloadTime));
+        yield return new WaitForSeconds(reloadTime);
+        StopCoroutine(uiManager.ReloadingUIRoutine(isReloading, reloadTime));
+        bulletsLeft = magazineSize;
+        isReloading = false;
+        
     }
 }

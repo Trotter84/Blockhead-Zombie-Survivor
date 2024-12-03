@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float turnSpeed = 200f;
+
+    private float timer;
   
 
     void Start()
@@ -46,10 +49,10 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("The WeaponScript on Player is NULL.");
         }
 
-        crosshair = GameObject.Find("Crosshair").GetComponent<Image>();
+        crosshair = GameObject.Find("Crosshair_img").GetComponent<Image>();
         if (crosshair == null)
         {
-            Debug.LogError("The Crosshair GameObject on the Player is NULL.");
+            Debug.LogError("The Crosshair_img GameObject on the Player is NULL.");
         }
         crosshair.material.color = Color.clear;
     }
@@ -57,6 +60,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Movement();
+
+        timer -= Time.deltaTime;
     }
 
     void Movement()
@@ -94,6 +99,17 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             weaponScript.Fire();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.LogWarning(weaponScript.reloadTime); 
+
+            if (0 > timer)
+            {
+                weaponScript.Reload();
+                timer = weaponScript.reloadTime;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.C))
